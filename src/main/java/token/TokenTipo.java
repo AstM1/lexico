@@ -20,10 +20,16 @@ public enum TokenTipo {
     DIFERENTE("<>"),
    
 //    NUMERO REAL
-    NUMR(""),
+    NUMR("-?\\d+\\.\\d+"),
     
 //    NUMERO INTEIRO
-    NUMI(""),
+    NUMI("-?\\d+"),
+    
+//    PONTUAÇÃO
+    PONTO("."),
+    PONTOVIRGULA(";"),
+    DOISPONTOS(":"),
+    ATRIBUICAO(":="),
     
 //    NUMERO PALAVRA RESERVADA
     PROGRAM("PROGRAM"),

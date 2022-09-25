@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Scanner;
 import token.PalavraReservada;
 import token.Token;
+import token.TokenTipo;
 
 /**
  *
@@ -51,7 +52,7 @@ public class Lexico {
                 this.caractereAtual = caracteres[this.colunaAtual];
                 String aux = this.tokenAtual.getTokenString() + this.caractereAtual;
                 this.tokenAtual.setTokenString(aux);
-
+                
                 verificaTipo(this.caractereAtual);
             }
         }
@@ -101,28 +102,34 @@ public class Lexico {
         return str.equals(" ") || str.equals("\n");
     }
 
-    private boolean isReservedWord(String str) {
-        PalavraReservada[] values = PalavraReservada.values();
+    private void setTipoToken(String str) {
+        TokenTipo[] values = TokenTipo.values();
         for (int i = 0; i < values.length; i++) {
-            if (values[i].equals(str)) { //  não funciona precisa pegar o .getValor()
-                return true;
+            try {
+                if (str.matches(values[i].getValor())) {
+                    this.tokenAtual.setTokenTipo(values[i]);
+                }
+            } catch (Exception e) {
             }
         }
-        return true;
     }
 
     private boolean verificaPontuacao(String str) {
+        
         return true;
     }
 
     private boolean verificaOperador(String str) {
+        
         return true;
     }
 
     private void verificaEstado() {
+        
     }
 
     private boolean verificaLetra(String str) {
+        
         return true;
     }
 
