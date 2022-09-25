@@ -1,0 +1,10 @@
+token\OperadorAritmetico.class
+lexico\Lexico.class
+token\Token.class
+token\NumeroReal.class
+token\NumeroInteiro.class
+token\OperadorRelacional.class
+token\TokenTipo.class
+main\Main.class
+token\PalavraReservada.class
+erro\ErroLexico.class

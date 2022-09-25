@@ -1,0 +1,8 @@
+PROGRAM exemplo;
+    VAR valor : INTEGER
+BEGIN
+    valor := 10;
+
+    IF valor > 5 THEN
+        valor := valor + 3;
+END
