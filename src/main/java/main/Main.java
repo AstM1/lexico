@@ -27,9 +27,9 @@ public class Main {
             }
         } catch (ErroLexico e) {
             if (e.getMessage() != null) {
-                System.out.println("Erro " + e.getMessage() + " na linha: " + e.getErrorPosition());
+//                System.out.println("Erro " + e.getMessage() + " na linha: " + e.getErrorPosition());
             } else {
-                System.out.println("Erro Léxico na linha: " + e.getErrorPosition());
+//                System.out.println("Erro Léxico na linha: " + e.getErrorPosition());
             }
         }
     }

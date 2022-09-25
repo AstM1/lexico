@@ -32,6 +32,7 @@ public class Lexico {
     public Lexico() {
         this.tokens = new ArrayList<>();
         this.linhaAtual = 0;
+        this.colunaAtual = 0;
         this.estadoAtual = 0;
         this.tokenAtual = new Token();
 
@@ -48,6 +49,8 @@ public class Lexico {
         while (codigo.hasNextLine()) {
             this.linhaAtual++;
             this.caracteres = codigo.next().split("");
+            this.tokenAtual.setTokenString("");
+            this.tokenAtual.setPosicaoInicial(this.colunaAtual);
             for (this.colunaAtual = 0; this.colunaAtual < caracteres.length; this.colunaAtual++) {
                 this.caractereAtual = caracteres[this.colunaAtual];
                 String aux = this.tokenAtual.getTokenString() + this.caractereAtual;
@@ -57,7 +60,6 @@ public class Lexico {
             }
         }
     }
-
 
     private void setEstado(String cadeiaAtual) {
         if (verificaEspaco(cadeiaAtual)) {
@@ -89,10 +91,8 @@ public class Lexico {
         } else if (verificaOperador(cadeiaAtual)) {
             this.estadoAtual = 8;
         }
-
         verificaEstado();
     }
-
 
     private void verificaEstado() {
         switch (this.estadoAtual) {
@@ -105,44 +105,49 @@ public class Lexico {
                 }
                 break;
 
-            case 3, 5:
+            case 3 | 5:
                 if (verificaNumero(this.tokenAtual.getTokenString())) {
                     setToken();
                 } else {
-                    tokenDesconhecido(false);
+                    tokenDesconhecido();
                 }
                 break;
-                
+
             case 6:
                 if (!verificaPrimeiroCaractere(this.tokenAtual.getTokenString())) {
                     setToken();
                 } else {
-                    tokenDesconhecido(true);
+                    tokenDesconhecido();
                 }
                 break;
 
-            case 7, 8:
+            case 7 | 8:
                 setToken();
                 break;
         }
     }
 
-
     private void setToken() {
+        setTipoTokenAtual(this.tokenAtual.getTokenString());
+        this.tokenAtual.setPosicaoFinal(this.colunaAtual);
         this.tokens.add(this.tokenAtual);
-                
+
         this.estadoAtual = 0;
         limpaToken();
     }
-    
+
     private boolean verificaPrimeiroCaractere(String str) {
         String[] split = str.split("");
         String caractere = split[0];
         return verificaNumero(caractere);
     }
 
-
     // Funções de Verifição
+    private void tokenDesconhecido() {
+        ErroLexico e = new ErroLexico(this.linhaAtual, this.colunaAtual, "Erro, caractere \"" + this.caractereAtual + "\" não reconhecido!");
+        System.out.println("Erro encontrado na linha: " + e.getLinha() + " e coluna: " + e.getColuna() + " causa: " + e.getMessage());
+        e.printStackTrace();
+    }
 
     private boolean verificaFimDaLinha() {
         return this.colunaAtual >= caracteres.length - 1;
@@ -157,18 +162,33 @@ public class Lexico {
     }
 
     private boolean verificaPontuacao(String str) {
-
-        return true;
+        TokenTipo[] tiposToken = TokenTipo.values();
+        for (int i = 12; i < 15; i++) {
+            try {
+                if (str.toUpperCase().matches(tiposToken[i].getValor())) {
+                    return true;
+                }
+            } catch (Exception e) {
+            }
+        }
+        return false;
     }
 
     private boolean verificaOperador(String str) {
-
-        return true;
+        TokenTipo[] tiposToken = TokenTipo.values();
+        for (int i = 0; i < 9; i++) {
+            try {
+                if (str.toUpperCase().matches(tiposToken[i].getValor())) {
+                    return true;
+                }
+            } catch (Exception e) {
+            }
+        }
+        return false;
     }
 
     private boolean verificaLetra(String str) {
-
-        return true;
+        return str.matches("\\b([a-zA-Z])\\b.*");
     }
 
     private boolean verificaPonto(String str) {
@@ -180,7 +200,7 @@ public class Lexico {
     }
 
     private String proximoCaractere() {
-        return colunaAtual + 1 <= caracteres.length ? caracteres[colunaAtual + 1] : "";
+        return colunaAtual + 1 <= caracteres.length - 1 ? caracteres[colunaAtual + 1] : "";
     }
 
     private String caractereAnterior() {
