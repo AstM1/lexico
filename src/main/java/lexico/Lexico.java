@@ -1,12 +1,12 @@
 package lexico;
 
 import erro.ErroLexico;
+import token.Token;
+import token.TokenTipo;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import token.PalavraReservada;
-import token.Token;
-import token.TokenTipo;
 
 /**
  *
@@ -53,47 +53,46 @@ public class Lexico {
                 String aux = this.tokenAtual.getTokenString() + this.caractereAtual;
                 this.tokenAtual.setTokenString(aux);
 
-                verificaPalavraReservada("STRING");
                 setEstado(this.caractereAtual);
             }
         }
     }
-    
 
-    private void setEstado(String str) {
-        if (verificaEspaco(str)) {
+
+    private void setEstado(String cadeiaAtual) {
+        if (verificaEspaco(cadeiaAtual)) {
             limpaToken();
         }
 
-        if (verificaNumero(str)) {
+        if (verificaNumero(cadeiaAtual)) {
             if ((verificaEspaco(caractereAnterior()) || verificaVazio(caractereAnterior()))
                     && (verificaEspaco(proximoCaractere()) || verificaFimDaLinha())) {
-                this.tokenAtual.setTokenString(str);
+                this.tokenAtual.setTokenString(cadeiaAtual);
                 this.estadoAtual = 3;
             } else if ((verificaEspaco(proximoCaractere()) || verificaFimDaLinha()) && !this.tokenAtual.getTokenString().contains(".")) {
                 this.estadoAtual = 3;
             } else if (this.estadoAtual == 4 && (verificaEspaco(proximoCaractere()) || verificaFimDaLinha())) {
                 this.estadoAtual = 5;
             }
-        } else if (verificaPonto(str) && verificaNumero(caractereAnterior()) && verificaNumero(proximoCaractere())) {
+        } else if (verificaPonto(cadeiaAtual) && verificaNumero(caractereAnterior()) && verificaNumero(proximoCaractere())) {
             this.estadoAtual = 4;
-        } else if (verificaLetra(str) && !verificaVazio(str)) {
+        } else if (verificaLetra(cadeiaAtual) && !verificaVazio(cadeiaAtual)) {
             if ((verificaEspaco(caractereAnterior()) || verificaVazio(caractereAnterior()))
                     && (verificaEspaco(proximoCaractere()) || verificaFimDaLinha())) {
-                this.tokenAtual.setTokenString(str);
+                this.tokenAtual.setTokenString(cadeiaAtual);
                 this.estadoAtual = 6;
             } else if ((verificaEspaco(proximoCaractere()) || verificaFimDaLinha()) && !verificaNumero(caractereAnterior())) {
                 this.estadoAtual = 6;
             }
-        } else if (verificaPontuacao(str) && !proximoCaractere().equals("=")) {
+        } else if (verificaPontuacao(cadeiaAtual) && !proximoCaractere().equals("=")) {
             this.estadoAtual = 7;
-        } else if (verificaOperador(str)) {
+        } else if (verificaOperador(cadeiaAtual)) {
             this.estadoAtual = 8;
         }
 
         verificaEstado();
     }
-    
+
 
     private void verificaEstado() {
         switch (this.estadoAtual) {
@@ -106,85 +105,43 @@ public class Lexico {
                 }
                 break;
 
-            case 3:
+            case 3, 5:
                 if (verificaNumero(this.tokenAtual.getTokenString())) {
-                    setToken("NUMI");
+                    setToken();
                 } else {
                     tokenDesconhecido(false);
                 }
                 break;
-
-            case 5:
-                if (verificaNumero(this.tokenAtual.getTokenString())) {
-                    setToken("NUMR");
-                } else {
-                    tokenDesconhecido(false);
-                }
-                break;
+                
             case 6:
                 if (!verificaPrimeiroCaractere(this.tokenAtual.getTokenString())) {
-                    if (!verificaPalavraReservada(this.tokenAtual.getTokenString())) {
-                        setToken("IDENTIFICADOR");
-                    } else {
-                        setToken("PALAVRARESERVADA");
-                    }
+                    setToken();
                 } else {
                     tokenDesconhecido(true);
                 }
                 break;
 
-            case 7:
-                setToken("PONTUACAO");
-                break;
-            case 8:
-                setToken("OPERADOR");
+            case 7, 8:
+                setToken();
                 break;
         }
     }
-    
-    
-    private void setToken(String token) {
-        switch (token) {
-            case "NUMI":
-                found.num_int.push({ token: currentToken.trim(), line: currentLineIndex + 1 });
-                generalist.push({ type: 'Inteiro', token: currentToken.trim(), line: currentLineIndex + 1 });
-                currentState = 0;
-                clearToken();
-                break;
-            case "NUMR":
-                found.num_real.push({ token: currentToken.trim(), line: currentLineIndex + 1 });
-                generalist.push({ type: 'Real', token: currentToken.trim(), line: currentLineIndex + 1 })
-                currentState = 0;
-                clearToken();
-                break;
-            case "IDENTIFICADOR":
-                found.variables.push({ token: currentToken.trim(), line: currentLineIndex + 1 });
-                generalist.push({ type: 'Variável', token: currentToken.trim(), line: currentLineIndex + 1 })
-                currentState = 0;
-                clearToken();
-                break;
-            case "PONTUACAO":
-                found.punctuations.push({ token: currentToken.trim(), line: currentLineIndex + 1 });
-                generalist.push({ type: 'Pontuação', token: currentToken.trim(), line: currentLineIndex + 1 })
-                currentState = 0;
-                clearToken();
-                break;
-            case "OPERADOR":
-                found.operators.push({ token: currentToken.trim(), line: currentLineIndex + 1 });
-                generalist.push({ type: 'Operador', token: currentToken.trim(), line: currentLineIndex + 1 })
-                currentState = 0;
-                clearToken();
-                break;
-            case "PALAVRARESERVADA":
-                found.reservedWords.push({ token: currentToken.trim(), line: currentLineIndex + 1 });
-                generalist.push({ type: 'Palavra reservada', token: currentToken.trim(), line: currentLineIndex + 1 })
-                currentState = 0;
-                clearToken();
-                break;
-        }
+
+
+    private void setToken() {
+        this.tokens.add(this.tokenAtual);
+                
+        this.estadoAtual = 0;
+        limpaToken();
     }
     
-    
+    private boolean verificaPrimeiroCaractere(String str) {
+        String[] split = str.split("");
+        String caractere = split[0];
+        return verificaNumero(caractere);
+    }
+
+
     // Funções de Verifição
 
     private boolean verificaFimDaLinha() {
@@ -232,29 +189,6 @@ public class Lexico {
 
     private void limpaToken() {
         this.tokenAtual = new Token();
-    }
-
-    private void tokenDesconhecido(boolean b) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
-    private boolean verificaPalavraReservada(String tokenString) {
-        TokenTipo[] tiposToken = TokenTipo.values();
-        for (int i = 16; i < tiposToken.length; i++) {
-            try {
-                if (tokenString.toUpperCase().matches(tiposToken[i].getValor())) {
-                    return true;
-                }
-            } catch (Exception e) {
-            }
-        }
-        return false;
-    }
-
-    private boolean verificaPrimeiroCaractere(String str) {
-        String[] split = str.split("");
-        String caractere = split[0];
-        return verificaNumero(caractere);
     }
 
     private void setTipoTokenAtual(String token) {
