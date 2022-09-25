@@ -11,7 +11,7 @@ public enum TokenTipo {
     MULTIPLICACAO("*"),
     DIVISAO("/"),
     
-//    OPERADORES RELACIONAIS
+    //OPERADORES RELACIONAIS
     IGUAL("="),
     MAIORIGUAL(">="),
     MENORIGUAL("<="),
@@ -19,19 +19,19 @@ public enum TokenTipo {
     MENOR("<"),
     DIFERENTE("<>"),
    
-//    NUMERO REAL
+    //NUMERO REAL
     NUMR("-?\\d+\\.\\d+"),
     
-//    NUMERO INTEIRO
+    //NUMERO INTEIRO
     NUMI("-?\\d+"),
     
-//    PONTUAÇÃO
+    //PONTUAÇÃO
     PONTO("."),
     PONTOVIRGULA(";"),
     DOISPONTOS(":"),
     ATRIBUICAO(":="),
     
-//    NUMERO PALAVRA RESERVADA
+    //NUMERO PALAVRA RESERVADA
     PROGRAM("PROGRAM"),
     BEGIN("BEGIN"),
     END("END"),
