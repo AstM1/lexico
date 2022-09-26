@@ -22,8 +22,8 @@ public enum TokenTipo {
     //PONTUAÇÃO
     PONTO("."),
     PONTOVIRGULA(";"),
-    DOISPONTOS(":"),
     ATRIBUICAO(":="),
+    DOISPONTOS(":"),
     ABREPARENTESES("("),
     FECHAPARENTESES(")"),
     

@@ -83,10 +83,14 @@ public class Lexico {
                     && (verificaEspaco(proximoCaractere()) || verificaFimDaLinha())) {
                 this.tokenAtual.setTokenString(cadeiaAtual);
                 this.estadoAtual = 6;
-            } else if ((verificaEspaco(proximoCaractere()) || verificaFimDaLinha() || proximoCaractere().equals(";")) && !verificaNumero(caractereAnterior())) {
+            } else if ((verificaEspaco(proximoCaractere())
+                    || verificaFimDaLinha()
+                    || proximoCaractere().equals(";")
+                    || proximoCaractere().equals(":"))
+                    && !verificaNumero(caractereAnterior())) {
                 this.estadoAtual = 6;
             }
-        } else if (verificaPontuacao(cadeiaAtual) && !proximoCaractere().equals("=")) {
+        } else if (verificaPontuacao(cadeiaAtual)) {
             this.estadoAtual = 7;
         } else if (verificaOperador(cadeiaAtual)) {
             this.estadoAtual = 8;
@@ -105,7 +109,15 @@ public class Lexico {
                 }
                 break;
 
-            case 3 | 5:
+            case 3:
+                if (verificaNumero(this.tokenAtual.getTokenString())) {
+                    setToken();
+                } else {
+                    tokenDesconhecido();
+                }
+                break;
+
+            case 5:
                 if (verificaNumero(this.tokenAtual.getTokenString())) {
                     setToken();
                 } else {
@@ -121,14 +133,17 @@ public class Lexico {
                 }
                 break;
 
-            case 7 | 8:
+            case 7:
+                setToken();
+                break;
+
+            case 8:
                 setToken();
                 break;
         }
     }
 
     private void setToken() {
-        setTipoTokenAtual(this.tokenAtual.getTokenString());
         this.tokenAtual.setPosicaoFinal(this.colunaAtual);
         this.tokens.add(this.tokenAtual);
 
@@ -163,9 +178,10 @@ public class Lexico {
 
     private boolean verificaPontuacao(String str) {
         TokenTipo[] tiposToken = TokenTipo.values();
-        for (int i = 12; i < 15; i++) {
+
+        for (int i = 10; i < 15; i++) {
             try {
-                if (str.toUpperCase().matches(tiposToken[i].getValor())) {
+                if (str.equals(tiposToken[i].getValor())) {
                     return true;
                 }
             } catch (Exception e) {
@@ -176,9 +192,10 @@ public class Lexico {
 
     private boolean verificaOperador(String str) {
         TokenTipo[] tiposToken = TokenTipo.values();
+
         for (int i = 0; i < 9; i++) {
             try {
-                if (str.toUpperCase().matches(tiposToken[i].getValor())) {
+                if (str.equals(tiposToken[i].getValor())) {
                     return true;
                 }
             } catch (Exception e) {

@@ -19,6 +19,7 @@ public class Token {
     }
 
     public Token() {
+        this.tokenString = "";
     }
 
     public int getBegin() {

@@ -37,7 +37,7 @@ public class Main {
     private static Scanner lerArquivo() {
         Scanner s = null;
         try {
-            File f = new File("arquivos\\codigo.txt");
+            File f = new File("/Users/pedrochagas/Documents/Faculdade/5ºAno/Compiladores/TrabalhoLexico/lexico/arquivos/codigo.txt");
             return new Scanner(f);
         } catch (FileNotFoundException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
