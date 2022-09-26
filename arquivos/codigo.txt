@@ -1,5 +1,5 @@
 PROGRAM exemplo;
-    VAR valor : INTEGER
+    VAR valor: INTEGER
 BEGIN
     valor := 10;
 

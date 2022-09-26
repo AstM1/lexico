@@ -18,20 +18,16 @@ public enum TokenTipo {
     MAIOR(">"),
     MENOR("<"),
     DIFERENTE("<>"),
-   
-    //NUMERO REAL
-    NUMR("-?\\d+\\.\\d+"),
-    
-    //NUMERO INTEIRO
-    NUMI("-?\\d+"),
     
     //PONTUAÇÃO
     PONTO("."),
     PONTOVIRGULA(";"),
     DOISPONTOS(":"),
     ATRIBUICAO(":="),
+    ABREPARENTESES("("),
+    FECHAPARENTESES(")"),
     
-    //NUMERO PALAVRA RESERVADA
+    //PALAVRA RESERVADA
     PROGRAM("PROGRAM"),
     BEGIN("BEGIN"),
     END("END"),
@@ -47,8 +43,17 @@ public enum TokenTipo {
     TYPE("TYPE"),
     INTEGER("INTEGER"),
     REAL("REAL"),
-    STRING("STRING");
-
+    STRING("STRING"),
+   
+    //NUMERO REAL
+    NUMR("-?\\d+\\.\\d+"),
+    
+    //NUMERO INTEIRO
+    NUMI("-?\\d+"),
+    
+    //IDENTIFICADOR
+    IDENTIFICADOR("\\b([a-zA-Z]{1}[0-9a-zA-Z_]{0,31})\\b.*");
+    
     private final String valor;
 
     private TokenTipo(String valor) {

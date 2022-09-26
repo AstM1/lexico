@@ -55,7 +55,7 @@ public class Lexico {
                 this.caractereAtual = caracteres[this.colunaAtual];
                 String aux = this.tokenAtual.getTokenString() + this.caractereAtual;
                 this.tokenAtual.setTokenString(aux);
-
+                setTipoTokenAtual(this.tokenAtual.getTokenString());
                 setEstado(this.caractereAtual);
             }
         }
@@ -66,7 +66,7 @@ public class Lexico {
             limpaToken();
         }
 
-        if (verificaNumero(cadeiaAtual)) {
+        if (verificaNumero(cadeiaAtual) && !verificaLetra(caractereAnterior())) {
             if ((verificaEspaco(caractereAnterior()) || verificaVazio(caractereAnterior()))
                     && (verificaEspaco(proximoCaractere()) || verificaFimDaLinha())) {
                 this.tokenAtual.setTokenString(cadeiaAtual);
@@ -78,12 +78,12 @@ public class Lexico {
             }
         } else if (verificaPonto(cadeiaAtual) && verificaNumero(caractereAnterior()) && verificaNumero(proximoCaractere())) {
             this.estadoAtual = 4;
-        } else if (verificaLetra(cadeiaAtual) && !verificaVazio(cadeiaAtual)) {
+        } else if ((verificaLetra(cadeiaAtual) && !verificaVazio(cadeiaAtual)) || (verificaNumero(cadeiaAtual) && verificaLetra(caractereAnterior()))) {
             if ((verificaEspaco(caractereAnterior()) || verificaVazio(caractereAnterior()))
                     && (verificaEspaco(proximoCaractere()) || verificaFimDaLinha())) {
                 this.tokenAtual.setTokenString(cadeiaAtual);
                 this.estadoAtual = 6;
-            } else if ((verificaEspaco(proximoCaractere()) || verificaFimDaLinha()) && !verificaNumero(caractereAnterior())) {
+            } else if ((verificaEspaco(proximoCaractere()) || verificaFimDaLinha() || proximoCaractere().equals(";")) && !verificaNumero(caractereAnterior())) {
                 this.estadoAtual = 6;
             }
         } else if (verificaPontuacao(cadeiaAtual) && !proximoCaractere().equals("=")) {
@@ -114,10 +114,10 @@ public class Lexico {
                 break;
 
             case 6:
-                if (!verificaPrimeiroCaractere(this.tokenAtual.getTokenString())) {
-                    setToken();
-                } else {
+                if (this.tokenAtual.getTokenTipo().equals(TokenTipo.IDENTIFICADOR) && verificaNumeroPrimeiroCaractere(this.tokenAtual.getTokenString())) {
                     tokenDesconhecido();
+                } else {
+                    setToken();
                 }
                 break;
 
@@ -136,7 +136,7 @@ public class Lexico {
         limpaToken();
     }
 
-    private boolean verificaPrimeiroCaractere(String str) {
+    private boolean verificaNumeroPrimeiroCaractere(String str) {
         String[] split = str.split("");
         String caractere = split[0];
         return verificaNumero(caractere);
@@ -215,8 +215,16 @@ public class Lexico {
         TokenTipo[] tiposToken = TokenTipo.values();
         for (int i = 0; i < tiposToken.length; i++) {
             try {
-                if (token.matches(tiposToken[i].getValor())) {
-                    this.tokenAtual.setTokenTipo(tiposToken[i]);
+                if (i < tiposToken.length - 3) {
+                    if (token.equals(tiposToken[i].getValor())) {
+                        this.tokenAtual.setTokenTipo(tiposToken[i]);
+                        break;
+                    }
+                } else {
+                    if (token.matches(tiposToken[i].getValor())) {
+                        this.tokenAtual.setTokenTipo(tiposToken[i]);
+                        break;
+                    }
                 }
             } catch (Exception e) {
             }
