@@ -26,18 +26,14 @@ public class Main {
                 lexico.analisar(scanner);
             }
         } catch (ErroLexico e) {
-            if (e.getMessage() != null) {
-//                System.out.println("Erro " + e.getMessage() + " na linha: " + e.getErrorPosition());
-            } else {
-//                System.out.println("Erro Léxico na linha: " + e.getErrorPosition());
-            }
         }
     }
 
     private static Scanner lerArquivo() {
         Scanner s = null;
         try {
-            File f = new File("/Users/pedrochagas/Documents/Faculdade/5ºAno/Compiladores/TrabalhoLexico/lexico/arquivos/codigo.txt");
+            File f = new File("arquivos/codigo.txt");
+//            File f = new File("/Users/pedrochagas/Documents/Faculdade/5ºAno/Compiladores/TrabalhoLexico/lexico/arquivos/codigo.txt");
             return new Scanner(f);
         } catch (FileNotFoundException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);

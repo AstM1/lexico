@@ -48,32 +48,34 @@ public class Lexico {
     public void analisar(Scanner codigo) throws ErroLexico {
         while (codigo.hasNextLine()) {
             this.linhaAtual++;
-            this.caracteres = codigo.next().split("");
+            this.caracteres = codigo.nextLine().split("");
             this.tokenAtual.setTokenString("");
             this.tokenAtual.setPosicaoInicial(this.colunaAtual);
             for (this.colunaAtual = 0; this.colunaAtual < caracteres.length; this.colunaAtual++) {
                 this.caractereAtual = caracteres[this.colunaAtual];
                 String aux = this.tokenAtual.getTokenString() + this.caractereAtual;
                 this.tokenAtual.setTokenString(aux);
-                setTipoTokenAtual(this.tokenAtual.getTokenString());
-                setEstado(this.caractereAtual);
+
+                if (verificaEspaco(this.caractereAtual)) {
+                    limpaToken();
+                } else {
+                    setTipoTokenAtual(this.tokenAtual.getTokenString());
+                    setEstado(this.caractereAtual);
+                }
             }
         }
     }
 
     private void setEstado(String cadeiaAtual) {
-        if (verificaEspaco(cadeiaAtual)) {
-            limpaToken();
-        }
 
         if (verificaNumero(cadeiaAtual) && !verificaLetra(caractereAnterior())) {
             if ((verificaEspaco(caractereAnterior()) || verificaVazio(caractereAnterior()))
-                    && (verificaEspaco(proximoCaractere()) || verificaFimDaLinha())) {
+                    && (verificaEspaco(proximoCaractere()) || verificaFimDaLinha() || proximoCaractere().equals(";"))) {
                 this.tokenAtual.setTokenString(cadeiaAtual);
                 this.estadoAtual = 3;
-            } else if ((verificaEspaco(proximoCaractere()) || verificaFimDaLinha()) && !this.tokenAtual.getTokenString().contains(".")) {
+            } else if ((verificaEspaco(proximoCaractere()) || verificaFimDaLinha() || proximoCaractere().equals(";")) && !this.tokenAtual.getTokenString().contains(".")) {
                 this.estadoAtual = 3;
-            } else if (this.estadoAtual == 4 && (verificaEspaco(proximoCaractere()) || verificaFimDaLinha())) {
+            } else if (this.estadoAtual == 4 && (verificaEspaco(proximoCaractere()) || verificaFimDaLinha() || proximoCaractere().equals(";"))) {
                 this.estadoAtual = 5;
             }
         } else if (verificaPonto(cadeiaAtual) && verificaNumero(caractereAnterior()) && verificaNumero(proximoCaractere())) {
@@ -90,7 +92,7 @@ public class Lexico {
                     && !verificaNumero(caractereAnterior())) {
                 this.estadoAtual = 6;
             }
-        } else if (verificaPontuacao(cadeiaAtual)) {
+        } else if (verificaPontuacao(cadeiaAtual) && !proximoCaractere().equals("=")) {
             this.estadoAtual = 7;
         } else if (verificaOperador(cadeiaAtual)) {
             this.estadoAtual = 8;
@@ -245,6 +247,9 @@ public class Lexico {
                 }
             } catch (Exception e) {
             }
+        }
+        if (this.tokenAtual.getTokenTipo() == null) {
+            tokenDesconhecido();
         }
     }
 
