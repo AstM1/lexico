@@ -31,6 +31,7 @@ public class ErroLexico extends Exception {
         return coluna;
     }
 
+    @Override
     public String getMessage() {
         return message;
     }

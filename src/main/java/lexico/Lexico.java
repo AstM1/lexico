@@ -14,15 +14,15 @@ import java.util.Scanner;
  */
 public class Lexico {
 
-    /**
-     * Lista dos tokens gerados a partir da entrada
-     */
     private List<Token> tokens;
+    private List<String> tabelaDeChaves;
+
     private Integer linhaAtual;
     private Integer colunaAtual;
     private Integer estadoAtual;
     private String caractereAtual;
     private Token tokenAtual;
+
     private String[] caracteres;
 
     /**
@@ -31,11 +31,12 @@ public class Lexico {
      */
     public Lexico() {
         this.tokens = new ArrayList<>();
+        this.tabelaDeChaves = new ArrayList<>();
+        this.tokenAtual = new Token();
+
         this.linhaAtual = 0;
         this.colunaAtual = 0;
         this.estadoAtual = 0;
-        this.tokenAtual = new Token();
-
     }
 
     /**
@@ -49,8 +50,10 @@ public class Lexico {
         while (codigo.hasNextLine()) {
             this.linhaAtual++;
             this.caracteres = codigo.nextLine().split("");
+
             this.tokenAtual.setTokenString("");
             this.tokenAtual.setPosicaoInicial(this.colunaAtual);
+
             for (this.colunaAtual = 0; this.colunaAtual < caracteres.length; this.colunaAtual++) {
                 this.caractereAtual = caracteres[this.colunaAtual];
                 String aux = this.tokenAtual.getTokenString() + this.caractereAtual;
@@ -97,6 +100,7 @@ public class Lexico {
         } else if (verificaOperador(cadeiaAtual)) {
             this.estadoAtual = 8;
         }
+
         verificaEstado();
     }
 
@@ -147,23 +151,32 @@ public class Lexico {
 
     private void setToken() {
         this.tokenAtual.setPosicaoFinal(this.colunaAtual);
+        
         this.tokens.add(this.tokenAtual);
+        this.adicionaNaTabelaDeChaves();
 
         this.estadoAtual = 0;
         limpaToken();
     }
 
+    private void adicionaNaTabelaDeChaves() {
+        if (this.tokenAtual.getTokenTipo().equals(TokenTipo.IDENTIFICADOR)
+                && !this.tabelaDeChaves.contains(this.tokenAtual.getTokenString())) {
+            this.tabelaDeChaves.add(this.tokenAtual.getTokenString());
+        }
+    }
+
+    // ############ FUNÇÕES DE VERIFICAÇÃO ############
     private boolean verificaNumeroPrimeiroCaractere(String str) {
         String[] split = str.split("");
         String caractere = split[0];
+
         return verificaNumero(caractere);
     }
 
-    // Funções de Verifição
     private void tokenDesconhecido() {
         ErroLexico e = new ErroLexico(this.linhaAtual, this.colunaAtual, "Erro, caractere \"" + this.caractereAtual + "\" não reconhecido!");
         System.out.println("Erro encontrado na linha: " + e.getLinha() + " e coluna: " + e.getColuna() + " causa: " + e.getMessage());
-        e.printStackTrace();
     }
 
     private boolean verificaFimDaLinha() {
@@ -232,6 +245,7 @@ public class Lexico {
 
     private void setTipoTokenAtual(String token) {
         TokenTipo[] tiposToken = TokenTipo.values();
+
         for (int i = 0; i < tiposToken.length; i++) {
             try {
                 if (i < tiposToken.length - 3) {
@@ -248,6 +262,7 @@ public class Lexico {
             } catch (Exception e) {
             }
         }
+
         if (this.tokenAtual.getTokenTipo() == null) {
             tokenDesconhecido();
         }
@@ -260,6 +275,34 @@ public class Lexico {
      */
     public List<Token> getTokens() {
         return this.tokens;
+    }
+
+    public void mostraTokens() {
+        System.out.println("TOKENS:\n");
+
+        int tamanhoLista = this.tokens.size();
+
+        for (int i = 0; i < tamanhoLista; i++) {
+            System.out.print("<" + this.tokens.get(i).getTokenTipo() + ", '" + this.tokens.get(i).getTokenString() + "'>");
+
+            if (i < (tamanhoLista - 1)) {
+                System.out.print(", ");
+            }
+
+            if ((i + 1) % 5 == 0) {
+                System.out.println();
+            }
+        }
+
+        System.out.println("\n");
+    }
+
+    public void mostraTabelaDeChaves() {
+        System.out.println("TABELA DE CHAVES: ");
+
+        for (int i = 0; i < this.tabelaDeChaves.size(); i++) {
+            System.out.println(i + " -> " + this.tabelaDeChaves.get(i));
+        }
     }
 
     /**
