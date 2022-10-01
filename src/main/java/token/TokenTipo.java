@@ -2,7 +2,7 @@ package token;
 
 /**
  *
- * @author gusta
+ * @author gustavo e pedro
  */
 public enum TokenTipo {
     //OPERADORES ARITMETICOS
@@ -21,6 +21,7 @@ public enum TokenTipo {
     
     //PONTUAÇÃO
     PONTO("."),
+    VIRGULA(","),
     PONTOVIRGULA(";"),
     ATRIBUICAO(":="),
     DOISPONTOS(":"),
@@ -44,7 +45,7 @@ public enum TokenTipo {
     INTEGER("INTEGER"),
     REAL("REAL"),
     STRING("STRING"),
-   
+    COMENTARIO("//"),
     //NUMERO REAL
     NUMR("-?\\d+\\.\\d+"),
     

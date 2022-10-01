@@ -2,7 +2,7 @@ package token;
 
 /**
  *
- * @author gusta
+ * @author gustavo e pedro
  */
 public class Token {
 

@@ -1,0 +1,5 @@
+token\TokenTipo.class
+main\Main.class
+erro\ErroLexico.class
+lexico\Lexico.class
+token\Token.class
