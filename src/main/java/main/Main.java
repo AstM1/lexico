@@ -33,19 +33,15 @@ public class Main {
     }
 
     private static Scanner lerArquivo() {
-        Scanner s = null;
-
+        Scanner sc = new Scanner(System.in); 
+        
+        System.out.print("Caminho do arquivo a ser analisado: ");  
+        String caminhoArquivo = sc.nextLine(); 
+        
         try {
-            File f = new File("arquivos/codigo.txt");
-//            File f = new File("arquivos/maior.txt");
-//            File f = new File("arquivos/soma.txt");
-//            File f = new File("arquivos/temperatura.txt");
-
-//            File f = new File("/Users/pedrochagas/Documents/Faculdade/5ºAno/Compiladores/TrabalhoLexico/lexico/arquivos/codigo.txt");
-//            File f = new File("/Users/pedrochagas/Documents/Faculdade/5ºAno/Compiladores/TrabalhoLexico/lexico/arquivos/maior.txt");
-//            File f = new File("/Users/pedrochagas/Documents/Faculdade/5ºAno/Compiladores/TrabalhoLexico/lexico/arquivos/soma.txt");
-//            File f = new File("/Users/pedrochagas/Documents/Faculdade/5ºAno/Compiladores/TrabalhoLexico/lexico/arquivos/temperatura.txt");
-            return new Scanner(f);
+            File file = new File(caminhoArquivo);
+            
+            return new Scanner(file);
         } catch (FileNotFoundException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
             return null;

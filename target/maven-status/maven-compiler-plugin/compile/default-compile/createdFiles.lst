@@ -1,5 +1,5 @@
-token\TokenTipo.class
-main\Main.class
-erro\ErroLexico.class
-lexico\Lexico.class
-token\Token.class
+token/Token.class
+erro/ErroLexico.class
+lexico/Lexico.class
+token/TokenTipo.class
+main/Main.class

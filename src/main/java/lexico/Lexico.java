@@ -239,7 +239,7 @@ public class Lexico {
     }
 
     public void mostraTokens() {
-        System.out.println("TOKENS:\n");
+        System.out.println("\nTOKENS:\n");
         int tamanhoLista = this.tokens.size();
         for (int i = 0; i < tamanhoLista; i++) {
             System.out.print("<" + this.tokens.get(i).getTokenTipo() + ", '" + this.tokens.get(i).getTokenString() + "'>");
@@ -250,11 +250,11 @@ public class Lexico {
                 System.out.println();
             }
         }
-        System.out.println("\n");
+        System.out.println();
     }
 
     public void mostraTabelaDeChaves() {
-        System.out.println("TABELA DE CHAVES: ");
+        System.out.println("TABELA DE CHAVES: \n");
         for (int i = 0; i < this.tabelaDeChaves.size(); i++) {
             System.out.println(i + " -> " + this.tabelaDeChaves.get(i));
         }
