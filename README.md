@@ -6,7 +6,7 @@ Pedro da Cruz Chagas - RA: 94028
 
 ## Passos para executar:
 
-1) Executar o arquivo `.jar` que está na raiz do projeto
+1) Abrir o terminal na raiz do projeto e executar o comando `java -jar target/Analisador-Lexico-1.0.jar`
 2) Informar o caminho do arquivo `.txt` contexto o código fonte
 
 ## Formato de saída dos Tokens e da Tabela de Chaves
