@@ -27,6 +27,9 @@ public class Main {
 
                 lexico.mostraTokens();
                 lexico.mostraTabelaDeChaves();
+
+//                Sintatico sintatico = new Sintatico();
+//                sintatico.analisar();
             }
         } catch (ErroLexico e) {
         }
