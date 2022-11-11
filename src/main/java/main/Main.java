@@ -7,6 +7,7 @@ import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import lexico.Lexico;
+import sintatico.Sintatico;
 
 /**
  *
@@ -28,8 +29,8 @@ public class Main {
                 lexico.mostraTokens();
                 lexico.mostraTabelaDeChaves();
 
-//                Sintatico sintatico = new Sintatico();
-//                sintatico.analisar();
+                Sintatico sintatico = new Sintatico(lexico.getTokens());
+                //sintatico.analisar();
             }
         } catch (ErroLexico e) {
         }

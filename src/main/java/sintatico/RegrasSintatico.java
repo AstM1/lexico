@@ -13,6 +13,19 @@ public enum RegrasSintatico {
     VARIAVEL,
     IDENTIFICADOR,
     NUMERO,
-    DIGITO,
-    LETRA;
+    
+    ABREPARENTESES,
+    FECHAPARENTESES,
+    
+    ADICAO,
+    SUBTRACAO,
+    MULTIPLICACAO, 
+    DIVISAO,
+    
+    IGUAL,
+    MAIORIGUAL,
+    MENORIGUAL,
+    MAIOR,
+    MENOR,
+    DIFERENTE;
 }
