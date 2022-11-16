@@ -1,5 +1,10 @@
 token/Token.class
-erro/ErroLexico.class
 lexico/Lexico.class
 token/TokenTipo.class
+erro/ErroSintatico.class
+erro/ErroLexico.class
+sintatico/Tree.class
+sintatico/RegrasSintatico.class
+sintatico/Tree$Node.class
 main/Main.class
+sintatico/Sintatico.class

@@ -13,7 +13,7 @@ public class Tree<T> {
 
     public Tree() {
         root = new Node<>();
-        root.data = RegrasSintatico.EXPRESSAO;
+        root.data = (T) RegrasSintatico.EXPRESSAO;
         root.children = new ArrayList<>();
     }
 

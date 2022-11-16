@@ -21,7 +21,7 @@ public class Sintatico {
      */
     public Sintatico(List<Token> tokens) {
         this.tokens = tokens;
-        this.arvore = new Tree(String);
+        //this.arvore = new Tree(String);
     }
 
     /**
@@ -57,6 +57,52 @@ public class Sintatico {
             proximoToken();
             
             verificaTermo();
+        }
+        
+        verificaRelacao();
+    }
+    
+    private void verificaRelacao() {
+        if (this.tokenAtual.getTokenTipo() == TokenTipo.IGUAL) {
+            adicionaNaArvore(RegrasSintatico.IGUAL);
+            proximoToken();
+            
+            verificaExpressaoSimples();
+        }
+        
+        if (this.tokenAtual.getTokenTipo() == TokenTipo.MAIORIGUAL) {
+            adicionaNaArvore(RegrasSintatico.MAIORIGUAL);
+            proximoToken();
+            
+            verificaExpressaoSimples();
+        }
+        
+        if (this.tokenAtual.getTokenTipo() == TokenTipo.MENORIGUAL) {
+            adicionaNaArvore(RegrasSintatico.MENORIGUAL);
+            proximoToken();
+            
+            verificaExpressaoSimples();
+        }
+        
+        if (this.tokenAtual.getTokenTipo() == TokenTipo.MAIOR) {
+            adicionaNaArvore(RegrasSintatico.MAIOR);
+            proximoToken();
+            
+            verificaExpressaoSimples();
+        }
+        
+        if (this.tokenAtual.getTokenTipo() == TokenTipo.MENOR) {
+            adicionaNaArvore(RegrasSintatico.MENOR);
+            proximoToken();
+            
+            verificaExpressaoSimples();
+        }
+        
+        if (this.tokenAtual.getTokenTipo() == TokenTipo.DIFERENTE) {
+            adicionaNaArvore(RegrasSintatico.DIFERENTE);
+            proximoToken();
+            
+            verificaExpressaoSimples();
         }
     }
 
